@@ -1,17 +1,30 @@
 package br.edu.ufsj.ccomp.ies.main;
 
-import br.edu.ufsj.ccomp.ies.factory.EntidadeFactory;
-import br.edu.ufsj.ccomp.ies.modelo.Entidade;
 
 public class Main {
 	
 	public static void main(String args[]){
+		/*
+		HospedeControladorFactory hcfactory =
+				(HospedeControladorFactory)ControladorFactory.obterControladorFactory("hospede");
+		HospedeControlador hc = hcfactory.obterControlador();
 		
-		EntidadeFactory fabricaHospede = EntidadeFactory.obterEntidadeFactory("hospede");
-		Entidade hospede = fabricaHospede.obterEntidade();
+		ReservaControladorFactory rcfactory =
+				(ReservaControladorFactory)ControladorFactory.obterControladorFactory("reserva");
+		ReservaControlador rc = rcfactory.obterControlador();
+		*/
+		/*
+			Criar fábricas? (acho q nn)
+			fabricar controllers (na visão)
+			fabricar visão
+			Chamar visão
+		*/
+		
+		//EntidadeFactory fabricaHospede = EntidadeFactory.obterEntidadeFactory("hospede");
+		//Entidade hospede = fabricaHospede.obterEntidade();
 		
 		//System.out.println("aaa");
-		System.out.print(hospede);
+		//System.out.print(hospede);
 		
 		/*
 		Modelo modelo = new Modelo();

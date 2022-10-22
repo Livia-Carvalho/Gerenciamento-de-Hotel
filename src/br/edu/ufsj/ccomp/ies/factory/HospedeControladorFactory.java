@@ -6,7 +6,7 @@ public class HospedeControladorFactory extends ControladorFactory {
     
     public HospedeControlador obterControlador() {
 		
-		return new HospedeControlador();
+		return HospedeControlador.getInstance();
 		
 	}
 }

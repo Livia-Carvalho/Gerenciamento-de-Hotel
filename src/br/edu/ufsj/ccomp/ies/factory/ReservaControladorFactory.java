@@ -6,7 +6,7 @@ public class ReservaControladorFactory extends ControladorFactory {
 
     public ReservaControlador obterControlador() {
 		
-		return new ReservaControlador();
+		return ReservaControlador.getInstance();
 		
 	}
 }

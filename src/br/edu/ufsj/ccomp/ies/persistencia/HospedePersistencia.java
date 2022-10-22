@@ -2,8 +2,6 @@ package br.edu.ufsj.ccomp.ies.persistencia;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-
 import br.edu.ufsj.ccomp.ies.modelo.Entidade;
 import br.edu.ufsj.ccomp.ies.modelo.Hospede;
 
@@ -11,9 +9,12 @@ public class HospedePersistencia extends Persistencia{
 
 	List<Hospede> hospedes = new ArrayList<Hospede>();
 	
-	private static final HospedePersistencia uniqueInstance = new HospedePersistencia();
+	//SINGLETON
+	private static HospedePersistencia uniqueInstance;
 	private HospedePersistencia() { }
 	public static HospedePersistencia getInstance(){
+		if(uniqueInstance == null)
+			uniqueInstance = new HospedePersistencia();
 		return uniqueInstance;
 	}
 
@@ -26,6 +27,7 @@ public class HospedePersistencia extends Persistencia{
 		h.setTelefone((Double)args[2]);
 		h.setIdade((Integer)args[3]);
 		
+		adicionar(h);
 	}
 
 	public void adicionar(Entidade hospede) {
@@ -58,7 +60,7 @@ public class HospedePersistencia extends Persistencia{
 		}
 	}
 
-	public Hospede buscar(Integer ID) {
+	public Hospede buscaID(Integer ID) {
 		for(Hospede hospede : hospedes) {
 			if(hospede.getID() == ID){
 				return hospede;
@@ -67,9 +69,9 @@ public class HospedePersistencia extends Persistencia{
 		return null;
 	}
 
-	public Hospede buscar(String nome) {
+	public Hospede buscaAtributo(Object CPF) {
 		for(Hospede hospede : hospedes) {
-			if(Objects.equals(hospede.getNome(), nome)){
+			if(hospede.getCPF()== (Double)CPF){
 				return hospede;
 			}
 		}

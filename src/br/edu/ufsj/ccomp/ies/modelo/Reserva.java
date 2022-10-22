@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Reserva extends Entidade{
 	
-	private String numeroQuarto;
+	private Integer numeroQuarto;
 	List<Hospede> hospedes = new ArrayList<Hospede>();
 	
 
@@ -15,10 +15,10 @@ public class Reserva extends Entidade{
 		+ "Numero do quarto: " + numeroQuarto;
 	}
 
-	public String getNumeroQuarto() {
+	public Integer getNumeroQuarto() {
 		return numeroQuarto;
 	}
-	public void setNumeroQuarto(String numeroQuarto) {
+	public void setNumeroQuarto(Integer numeroQuarto) {
 		this.numeroQuarto = numeroQuarto;
 	}
 	public List<Hospede> getHospedes() {

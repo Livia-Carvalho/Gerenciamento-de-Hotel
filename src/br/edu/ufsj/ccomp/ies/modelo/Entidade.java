@@ -2,17 +2,17 @@ package br.edu.ufsj.ccomp.ies.modelo;
 
 public abstract class Entidade {
 	
-	private double ID;
+	private Integer ID;
 
 	public String toString() {
 		return "ID: " + ID;
 	}
 
-	public double getID() {
+	public Integer getID() {
 		return ID;
 	}
-	public void setID(double iD) {
-		ID = iD;
+	public void setID(Integer ID) {
+		this.ID = ID;
 	}
 	
 	
