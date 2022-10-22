@@ -11,7 +11,7 @@ public class Reserva extends Entidade{
 
 
 	public String toString() {
-		return "ID: " + ID
+		return "ID: " + getID()
 		+ "Numero do quarto: " + numeroQuarto;
 	}
 
