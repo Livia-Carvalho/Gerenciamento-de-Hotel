@@ -23,8 +23,8 @@ public class HospedePersistencia extends Persistencia{
 		Hospede h = (Hospede)hospede;
 		
 		h.setNome((String)args[0]);
-		h.setCPF((Double)args[1]);
-		h.setTelefone((Double)args[2]);
+		h.setCPF((Long)args[1]);
+		h.setTelefone((Long)args[2]);
 		h.setIdade((Integer)args[3]);
 		
 		adicionar(h);
@@ -32,10 +32,17 @@ public class HospedePersistencia extends Persistencia{
 
 	public void adicionar(Entidade hospede) {
 		Hospede h = (Hospede)hospede;
-		
-		if(!hospedes.contains(h)) {
-			hospedes.add(h);
+		if(hospedes.contains(h)) {
+			//hospede ja cadastrado
+			return;
 		}
+		for(Hospede hos : hospedes) {
+			if(hos.getCPF().equals(h.getCPF())) {
+				//cpf ja cadastrado
+				return;
+			}
+		}
+		hospedes.add(h);
 	}
 
 	public void alterar(Entidade hospede, Object args[]) {
@@ -44,9 +51,9 @@ public class HospedePersistencia extends Persistencia{
 		if(args[0] != null) 
 			h.setNome((String)args[0]);
 		if(args[1] != null)
-			h.setCPF((Double)args[1]);
+			h.setCPF((Long)args[1]);
 		if(args[2] != null)
-			h.setTelefone((Double)args[2]);
+			h.setTelefone((Long)args[2]);
 		if(args[3] != null)
 			h.setIdade((Integer)args[3]);
 		
@@ -55,23 +62,24 @@ public class HospedePersistencia extends Persistencia{
 	public void remover(Entidade hospede) {
 		Hospede h = (Hospede)hospede;
 
-		if(!hospedes.contains(h)) {
+		if(hospedes.contains(h)) {
 			hospedes.remove(h);
 		}
 	}
 
-	public Hospede buscaID(Integer ID) {
+	public Hospede buscar(Integer ID) {
 		for(Hospede hospede : hospedes) {
-			if(hospede.getID() == ID){
+			if(hospede.getID().equals(ID)){
 				return hospede;
 			}
 		}
 		return null;
 	}
 
-	public Hospede buscaAtributo(Object CPF) {
+	public Hospede buscar(String CPF) {
+		Long cpf = Long.parseLong(CPF);
 		for(Hospede hospede : hospedes) {
-			if(hospede.getCPF()== (Double)CPF){
+			if(hospede.getCPF().equals(cpf)){
 				return hospede;
 			}
 		}

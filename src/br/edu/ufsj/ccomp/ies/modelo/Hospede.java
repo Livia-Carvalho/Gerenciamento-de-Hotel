@@ -3,19 +3,19 @@ package br.edu.ufsj.ccomp.ies.modelo;
 public class Hospede extends Entidade{
 
 	private String nome;
-	private Double CPF;
-	private Double telefone;
+	private Long CPF;
+	private Long telefone;
 	private Integer idade;
+	private Boolean hospedado = false;
 	
 	public String toString() {
-		return "ID: " + getID()
-				+ "Nome: " + nome
+		return "\n\nID do hospede: " + getID()
+				+ "\nNome: " + nome
 				+ "\nCPF: " + CPF
 				+ "\nTelefone: " + telefone
-				+ "\nIdade: " + idade;
+				+ "\nIdade: " + idade
+				+ "\nHospedado: + hospedado";
 	}
-
-
 	
 	public String getNome() {
 		return nome;
@@ -23,16 +23,16 @@ public class Hospede extends Entidade{
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public Double getCPF() {
+	public Long getCPF() {
 		return CPF;
 	}
-	public void setCPF(Double cPF) {
+	public void setCPF(Long cPF) {
 		CPF = cPF;
 	}
-	public Double getTelefone() {
+	public Long getTelefone() {
 		return telefone;
 	}
-	public void setTelefone(Double telefone) {
+	public void setTelefone(Long telefone) {
 		this.telefone = telefone;
 	}
 	public Integer getIdade() {
@@ -40,5 +40,11 @@ public class Hospede extends Entidade{
 	}
 	public void setIdade(Integer idade) {
 		this.idade = idade;
+	}
+	public Boolean getHospedado() {
+		return hospedado;
+	}
+	public void setHospedado(Boolean hospedado) {
+		this.hospedado = hospedado;
 	}
 }

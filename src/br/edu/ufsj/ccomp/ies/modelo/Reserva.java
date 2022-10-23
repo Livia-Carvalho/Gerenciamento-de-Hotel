@@ -6,13 +6,28 @@ import java.util.List;
 public class Reserva extends Entidade{
 	
 	private Integer numeroQuarto;
-	List<Hospede> hospedes = new ArrayList<Hospede>();
+	private List<Hospede> hospedes = new ArrayList<Hospede>();
 	
 
-
 	public String toString() {
-		return "ID: " + getID()
-		+ "Numero do quarto: " + numeroQuarto;
+		
+		String listaHospedes = "\nHospedes na reserva:";
+		
+		for(Hospede h : hospedes) {
+			listaHospedes = listaHospedes.concat(h.toString());
+		}
+
+		return "\nID da reserva: " + getID()
+		+ "\nNumero do quarto: " + numeroQuarto
+		+ listaHospedes;
+	}
+	
+	public void addHospede(Hospede hospede) {
+		hospedes.add(hospede);
+	}
+	
+	public void removerHospede(Hospede hospede) {
+		hospedes.remove(hospede);
 	}
 
 	public Integer getNumeroQuarto() {

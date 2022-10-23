@@ -15,7 +15,6 @@ public abstract class Menu {
 			input = menu();
 			switch (input) {
 	            case 0:
-	                sair();
 	                return;
 
 	            case 1:
@@ -44,17 +43,13 @@ public abstract class Menu {
 	}
 
 	public int menu() {    
-		System.out.println("\n\n0 - Sair"
-				+ "\n1 - Cadastrar hospede"
-				+ "\n2 - Alterar dados de hospede"
-				+ "\n3 - Remover hospede"
-				+ "\n4 - Buscar hospede");
+		System.out.println("\n\n0 - Voltar"
+				+ "\n1 - Cadastrar"
+				+ "\n2 - Alterar dados"
+				+ "\n3 - Remover"
+				+ "\n4 - Buscar");
 		System.out.print("Sua opcao: ");
 		return scan.nextInt();
-	}
-
-	public void sair() {
-		scan.close();
 	}
 
     public abstract Entidade cadastro();

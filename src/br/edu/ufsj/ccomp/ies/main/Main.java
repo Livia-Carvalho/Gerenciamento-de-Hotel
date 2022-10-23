@@ -1,38 +1,29 @@
 package br.edu.ufsj.ccomp.ies.main;
 
+import br.edu.ufsj.ccomp.ies.factory.Factory;
+import br.edu.ufsj.ccomp.ies.visao.ReservaMenu;
+import br.edu.ufsj.ccomp.ies.visao.HospedeMenu;
+import br.edu.ufsj.ccomp.ies.visao.MenuPrincipal;
 
 public class Main {
 	
 	public static void main(String args[]){
-		/*
-		HospedeControladorFactory hcfactory =
-				(HospedeControladorFactory)ControladorFactory.obterControladorFactory("hospede");
-		HospedeControlador hc = hcfactory.obterControlador();
+				
+		MenuPrincipal menuPrincipal = new MenuPrincipal();
+		HospedeMenu hospedeMenu = (HospedeMenu)Factory.obterFactory("hospede").criarMenu();
+		ReservaMenu reservaMenu = (ReservaMenu)Factory.obterFactory("reserva").criarMenu();		
 		
-		ReservaControladorFactory rcfactory =
-				(ReservaControladorFactory)ControladorFactory.obterControladorFactory("reserva");
-		ReservaControlador rc = rcfactory.obterControlador();
-		*/
-		/*
-			Criar fábricas? (acho q nn)
-			fabricar controllers (na visão)
-			fabricar visão
-			Chamar visão
-		*/
-		
-		//EntidadeFactory fabricaHospede = EntidadeFactory.obterEntidadeFactory("hospede");
-		//Entidade hospede = fabricaHospede.obterEntidade();
-		
-		//System.out.println("aaa");
-		//System.out.print(hospede);
-		
-		/*
-		Modelo modelo = new Modelo();
-    	Controller controller = new Controller(modelo);
-    	Visao visao = new Visao(controller);
-    	modelo.addObserver(visao);
-    	visao.rodar();
-		 */
-		
+		int opcao = 0;
+		do {
+			opcao = menuPrincipal.selecionarMenu();
+			
+			if(opcao == 1) {
+				hospedeMenu.rodar();
+			} else if(opcao == 2) {
+				reservaMenu.rodar();
+			}else if (opcao != 0) {
+				// opcao invalida
+			}
+		}while(opcao != 0);
 	}
 }

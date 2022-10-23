@@ -8,7 +8,7 @@ public abstract class Persistencia {
     public abstract void adicionar(Entidade entidade);
     public abstract void alterar(Entidade entidade, Object args[]);
     public abstract void remover(Entidade entidade);
-    public abstract Entidade buscaID(Integer ID);
-    public abstract Entidade buscaAtributo(Object atributo);
+    public abstract Entidade buscar(Integer ID);
+    public abstract Entidade buscar(String atributo);
     
 }

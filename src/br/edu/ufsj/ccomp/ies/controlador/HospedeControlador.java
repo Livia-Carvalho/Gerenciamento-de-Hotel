@@ -1,9 +1,6 @@
 package br.edu.ufsj.ccomp.ies.controlador;
 
-import br.edu.ufsj.ccomp.ies.factory.EntidadeFactory;
-import br.edu.ufsj.ccomp.ies.factory.HospedeFactory;
-import br.edu.ufsj.ccomp.ies.factory.HospedePersistenciaFactory;
-import br.edu.ufsj.ccomp.ies.factory.PersistenciaFactory;
+import br.edu.ufsj.ccomp.ies.factory.Factory;
 import br.edu.ufsj.ccomp.ies.modelo.Entidade;
 import br.edu.ufsj.ccomp.ies.modelo.Hospede;
 import br.edu.ufsj.ccomp.ies.persistencia.HospedePersistencia;
@@ -13,13 +10,9 @@ public class HospedeControlador extends Controlador {
     
     //persistencia (requisitada da fabrica)
     HospedePersistencia persistencia =
-    		((HospedePersistenciaFactory)PersistenciaFactory.obterPersistenciaFactory("hospede")).obterPersistencia();
-
-    //fabrica de hospede
-    HospedeFactory hf =
-            (HospedeFactory)EntidadeFactory.obterEntidadeFactory("hospede");
+    		(HospedePersistencia)Factory.obterFactory("hospede").criarPersistencia();
+	
     
-
 	//SINGLETON
 	private static HospedeControlador uniqueInstance;
 	private HospedeControlador() { }
@@ -40,11 +33,10 @@ public class HospedeControlador extends Controlador {
 		}
 
 		//criando objeto hospede
-        Hospede hospede = hf.obterEntidade();
+        Hospede hospede = (Hospede)Factory.obterFactory("hospede").criarEntidade();
 
         //criando ID unico
 		hospede.setID(contador++);
-		//contador++;
 		
         //cadastrando hospede
 		persistencia.cadastrar(hospede, args);
@@ -55,33 +47,48 @@ public class HospedeControlador extends Controlador {
 
 	public void alterar(Entidade entidade, Object[] args) {
 		
+		if(args[0] == null || entidade == null) {
+			//faltou coisa, tente novamente
+			return;
+		}
 		
+		persistencia.alterar(entidade, args);
 	}
 
 	public void remover(Entidade entidade) {
 		
+		if(entidade == null) {
+			//faltou coisa, tente novamente
+			return;
+		}
+		
+		persistencia.remover(entidade);
 		
 	}
 
-	public Entidade buscaID(Integer ID) {
+	public Entidade buscar(Integer ID) {
 		
 		if(ID == null) {
 			//id vazio
 			return null;
 		}
 		
-		return persistencia.buscaID(ID);
+		return persistencia.buscar(ID);
 	}
 
-	public Entidade buscaAtributo(Object CPF) {
-		Double cpf = (Double)CPF;
+	public Entidade buscar(String CPF) {
+		String cpf = (String)CPF;
 		
 		if(cpf == null) {
 			//cpf vazio
 			return null;
 		}
-		
-		return persistencia.buscaAtributo(cpf);
+		Hospede h = persistencia.buscar(cpf);
+		if(h == null) {
+			//nao foi possivel tal tal tal
+			return null;
+		}
+		return h;
 	}
     
 }

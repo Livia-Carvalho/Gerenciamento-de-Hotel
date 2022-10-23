@@ -1,12 +1,6 @@
 package br.edu.ufsj.ccomp.ies.controlador;
 
-import br.edu.ufsj.ccomp.ies.factory.EntidadeFactory;
-import br.edu.ufsj.ccomp.ies.factory.HospedeMenuFactory;
-import br.edu.ufsj.ccomp.ies.factory.MenuFactory;
-import br.edu.ufsj.ccomp.ies.factory.PersistenciaFactory;
-import br.edu.ufsj.ccomp.ies.factory.ReservaFactory;
-import br.edu.ufsj.ccomp.ies.factory.ReservaMenuFactory;
-import br.edu.ufsj.ccomp.ies.factory.ReservaPersistenciaFactory;
+import br.edu.ufsj.ccomp.ies.factory.Factory;
 import br.edu.ufsj.ccomp.ies.modelo.Entidade;
 import br.edu.ufsj.ccomp.ies.modelo.Hospede;
 import br.edu.ufsj.ccomp.ies.modelo.Reserva;
@@ -18,14 +12,10 @@ public class ReservaControlador extends Controlador{
 
     
     //persistencia (requisitada da fabrica)
-    ReservaPersistencia persistencia =
-    		((ReservaPersistenciaFactory)PersistenciaFactory.obterPersistenciaFactory("reserva")).obterPersistencia();
-
-    //fabrica de reserva
-    ReservaFactory rf =
-            (ReservaFactory)EntidadeFactory.obterEntidadeFactory("hospede");
+	ReservaPersistencia persistencia =
+    		(ReservaPersistencia)Factory.obterFactory("reserva").criarPersistencia();
+	
     
-
 	//SINGLETON
 	private static ReservaControlador uniqueInstance;
 	private ReservaControlador() { }
@@ -43,22 +33,19 @@ public class ReservaControlador extends Controlador{
 		}
 		
 		//criando objeto reserva
-        Reserva reserva = rf.obterEntidade();
+        Reserva reserva = (Reserva)Factory.obterFactory("reserva").criarEntidade();
 
         //criando ID unico
 		reserva.setID(contador++);
-		//contador++;
 		
         //cadastrando reserva
 		persistencia.cadastrar(reserva, args);
 		
 		
 		//estabelecendo hospedes da reserva
-		ReservaMenu reservaMenu =
-				((ReservaMenuFactory)MenuFactory.obterMenuFactory("reserva")).obterMenu();
-		HospedeMenu hospedeMenu =
-				((HospedeMenuFactory)MenuFactory.obterMenuFactory("hospede")).obterMenu();
-		Boolean nenhum = true;
+		HospedeMenu hospedeMenu = (HospedeMenu)Factory.obterFactory("hospede").criarMenu();
+		ReservaMenu reservaMenu = (ReservaMenu)Factory.obterFactory("reserva").criarMenu();		
+		Boolean vazio = true;
 		Integer opcao = 0;
 		
 		do {
@@ -69,7 +56,7 @@ public class ReservaControlador extends Controlador{
 				
 				Hospede hospede = (Hospede)hospedeMenu.cadastro();
 				persistencia.addHospede(reserva, hospede);
-				nenhum = false;
+				vazio = false;
 				
 			} else if(opcao == 2){ //adicionar existente
 				
@@ -77,63 +64,94 @@ public class ReservaControlador extends Controlador{
 				if(hospede != null) {
 					persistencia.addHospede(reserva, hospede);
 				}
-				nenhum = false;
+				vazio = false;
 				
-			} else if(opcao != 1 &&
-						opcao != 2 &&
-						!nenhum) {
-				break;
-			}else if(nenhum){
+			} else if(opcao < 0 || opcao > 2) {
+				//opcao invalida
+			} else if(vazio){
 				//necessario pelo menos um hospede na reserva
 			} 
 
-		} while(nenhum);
+		} while(vazio || opcao != 0);
 		
         //retornando ID
 		return reserva;
 	}
 
-	public void alterar(Entidade entidade, Object[] args) {
+	public void alterar(Entidade reserva, Object[] args) {
 		
-		if(args[0] == null || entidade == null) {
+		if(reserva == null) {
+			//faltou coisa, tente novamente
+			return;
+		}
+		if(args[0] != null) persistencia.alterar(reserva, args);
+			
+		
+		//alterar hospedes da reserva
+		HospedeMenu hospedeMenu = (HospedeMenu)Factory.obterFactory("hospede").criarMenu();
+		ReservaMenu reservaMenu = (ReservaMenu)Factory.obterFactory("reserva").criarMenu();	
+		
+		Integer opcao = 0;
+		
+		do {
+
+			opcao = reservaMenu.alteracaoHospedes();
+			
+			if(opcao == 0) break;
+			else if(opcao < 0 || opcao > 2) {
+				//opcao invalida
+				continue;
+			}
+			
+			Hospede hospede = (Hospede)hospedeMenu.busca();
+			
+			if(opcao == 1){ //adicionar hospede a reserva
+				
+				if(hospede != null) {
+					persistencia.addHospede((Reserva)reserva, hospede);
+				}
+				
+			} else if(opcao == 2){ // remover hospede da reserva
+				
+				if(hospede != null) {
+					persistencia.removerHospede((Reserva)reserva, hospede);
+				}
+			} 
+
+		} while(opcao != 0);
+				
+	}
+
+	public void remover(Entidade reserva) {
+		
+		if(reserva == null) {
 			//faltou coisa, tente novamente
 			return;
 		}
 		
-		persistencia.alterar(entidade, args);
+		persistencia.remover((Reserva)reserva);
 		
 	}
 
-	public void remover(Entidade entidade) {
-		
-		if(entidade == null) {
-			//faltou coisa, tente novamente
-			return;
-		}
-		
-		persistencia.remover(entidade);
-		
-	}
-
-	public Entidade buscaID(Integer ID) {
+	public Entidade buscar(Integer ID) {
 		
 		if(ID == null) {
 			//id vazio
 			return null;
 		}
 		
-		return persistencia.buscaID(ID);
+		return persistencia.buscar(ID);
 	}
 
-	public Entidade buscaAtributo(Object numeroQuarto) {
-		Integer numero = (Integer)numeroQuarto;
+	public Entidade buscar(String numeroQuarto) {
+		String quarto = (String)numeroQuarto;
 		
-		if(numero == null) {
+		if(quarto == null) {
 			//numero vazio
 			return null;
 		}
 		
-		return persistencia.buscaAtributo(numeroQuarto);
+		return persistencia.buscar(numeroQuarto);
 	}
 
 }
